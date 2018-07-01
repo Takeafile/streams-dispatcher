@@ -4,7 +4,7 @@
   "description": "Distribute a stream chunks in several stream channels, and later re-join them in order",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --notify --coverage"
   },
   "repository": {
     "type": "git",
