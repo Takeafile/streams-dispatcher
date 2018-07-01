@@ -1,0 +1,1 @@
+exports.Dispatcher = require('./dispatcher')
