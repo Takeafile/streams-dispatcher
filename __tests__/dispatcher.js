@@ -42,3 +42,22 @@ test('Round-Robin', function(done)
     done()
   })
 })
+
+test('unshift', function(done)
+{
+  const dispatcher = new Dispatcher({
+    writers: [
+      new Writable({
+        objectMode: true,
+        write(chunk, encoding, callback)
+        {
+          expect(chunk).toEqual(1)
+
+          done()
+        },
+      })
+    ]
+  })
+
+  dispatcher.unshift(1)
+})
