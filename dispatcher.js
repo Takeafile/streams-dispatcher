@@ -9,7 +9,7 @@ function findItem(item)
 
 module.exports = class Dispatcher extends Writable
 {
-  constructor({inputOptions, writers = [], ...options})
+  constructor({inputOptions, writers = [], ...options} = {})
   {
     super({...options, objectMode: true})
 
@@ -67,7 +67,7 @@ module.exports = class Dispatcher extends Writable
     const {_writers} = this
 
     const index = _writers.findIndex(findItem, writer)
-    if(index)
+    if(index != null)
     {
       _writers.splice(index, 1)
 
@@ -98,6 +98,6 @@ module.exports = class Dispatcher extends Writable
   {
     const {_input, _writers} = this
 
-    if(!_writers.length()) _input.pause()
+    if(!_writers.length) _input.pause()
   }
 }

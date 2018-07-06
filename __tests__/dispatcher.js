@@ -61,3 +61,18 @@ test('unshift', function(done)
 
   dispatcher.unshift(1)
 })
+
+test('pipe & unpipe', function()
+{
+  const writer = new Writable
+
+  const dispatcher = new Dispatcher
+
+  dispatcher.pipe(writer)
+
+  expect(dispatcher._writers).toEqual([writer])
+
+  dispatcher.unpipe(writer)
+
+  expect(dispatcher._writers).toEqual([])
+})
