@@ -1,6 +1,6 @@
-const {Writable} = require('stream')
+const {PassThrough, Writable} = require('stream')
 
-const {Dispatcher} = require('..')
+const Dispatcher = require('..')
 
 
 test('Round-Robin', function(done)
@@ -75,4 +75,24 @@ test('pipe & unpipe', function()
   dispatcher.unpipe(writer)
 
   expect(dispatcher._writers).toEqual([])
+})
+
+test('fill a writer buffer and `unpipe()` it', function()
+{
+  const writer = new PassThrough({highWaterMark: 1, objectMode: true})
+  writer.pause()
+
+  const dispatcher = new Dispatcher({writers: [writer]})
+
+//  expect(dispatcher.write(1)).toBeTruthy()
+//  expect(dispatcher.write(2)).toBeFalsy()
+
+//  console.log(writer, dispatcher)
+//  expect(writer.).toEqual()
+//  expect(dispatcher._input.).toEqual()
+
+  dispatcher.unpipe(writer)
+//  console.log(dispatcher._input._readableState.buffer)
+
+//  expect(writer.).toEqual([])
 })
