@@ -13,6 +13,7 @@ module.exports = class Dispatcher extends Writable
   {
     super({...options, objectMode: true})
 
+    const inFlight = new Set
     const _writers = []
 
     const input = new PassThrough({...inputOptions, objectMode: true})
@@ -20,6 +21,8 @@ module.exports = class Dispatcher extends Writable
     {
       // Remove writer from list of writers accepting more data
       const writer = _writers.shift()
+
+      inFlight.add(writer)
 
       // After writting data, the writer can accept more data, so we push it
       // back at the end of the list of writers
@@ -52,6 +55,17 @@ module.exports = class Dispatcher extends Writable
       input.resume()
     }
 
+    /**
+     * @this writer
+     */
+    this._allLanded = function()
+    {
+      inFlight.delete(this)
+
+      if(input._readableState.ended && !inFlight.size)
+        for(const writer in _writers) writer.end()
+    }
+
     for(const writer of writers) this.pipe(writer)
   }
 
@@ -59,7 +73,8 @@ module.exports = class Dispatcher extends Writable
   {
     this._add.call(writer)
 
-    return writer
+    // TODO emit `pipe` event?
+    return writer.on('allLanded', this._allLanded)
   }
 
   unpipe(writer)
@@ -75,6 +90,9 @@ module.exports = class Dispatcher extends Writable
     }
     else
       writer.removeListener('drain', this._add)
+
+    // TODO emit `unpipe` event?
+    writer.removeListener('allLanded', this._allLanded)
 
     return this
   }
