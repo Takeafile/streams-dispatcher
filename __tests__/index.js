@@ -16,7 +16,7 @@ test('Round-Robin', function(done)
         {
           a.push(chunk)
           callback()
-        },
+        }
       }),
       new Writable({
         objectMode: true,
@@ -54,7 +54,7 @@ test('unshift', function(done)
           expect(chunk).toEqual(1)
 
           done()
-        },
+        }
       })
     ]
   })
