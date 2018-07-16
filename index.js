@@ -17,7 +17,7 @@ module.exports = class Dispatcher extends Writable
     const _writers = []
 
     const input = new PassThrough({...inputOptions, objectMode: true})
-    input.on('data', (data) =>
+    .on('data', (data) =>
     {
       // Remove writer from list of writers accepting more data
       const writer = _writers.shift()
@@ -38,11 +38,10 @@ module.exports = class Dispatcher extends Writable
         this._writerRemoved()
       }
     })
-    input.on('drain', process.nextTick.bind(process, this.uncork.bind(this)))
+    .on('drain', process.nextTick.bind(process, this.uncork.bind(this)))
+    .pause()
 
-    input.pause()
-
-    this._input = input
+    this._input   = input
     this._writers = _writers
 
     /**
