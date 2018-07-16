@@ -38,8 +38,19 @@ module.exports = class Dispatcher extends Writable
         this._writerRemoved()
       }
     })
+    .on('end', function()
+    {
+      for(const writer of _writers) writer.end()
+    })
     .on('drain', process.nextTick.bind(process, this.uncork.bind(this)))
     .pause()
+
+    function onFinish()
+    {
+      if(!inFlight.size) input.end()
+    }
+
+    this.on('finish', onFinish)
 
     this._input   = input
     this._writers = _writers
@@ -61,8 +72,7 @@ module.exports = class Dispatcher extends Writable
     {
       inFlight.delete(this)
 
-      if(input._readableState.ended && !inFlight.size)
-        for(const writer in _writers) writer.end()
+      if(this._writableState.finished) onFinish()
     }
 
     for(const writer of writers) this.pipe(writer)

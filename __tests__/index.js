@@ -96,3 +96,22 @@ test('fill a writer buffer and `unpipe()` it', function()
 
 //  expect(writer.).toEqual([])
 })
+
+test('`end` event', function(done)
+{
+  const expected = 1
+
+  const writer = new Writable({
+    objectMode: true,
+    write(chunk, encoding, callback)
+    {
+      expect(chunk).toEqual(expected)
+
+      this.emit('allLanded')  // TODO we need to find a generic solution
+      callback()
+    }
+  })
+  .on('finish', done)
+
+  new Dispatcher({writers: [writer]}).end(expected)
+})
