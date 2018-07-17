@@ -16,6 +16,8 @@ module.exports = class Dispatcher extends Writable
     const inFlight = new Set
     const _writers = []
 
+    const uncork = process.nextTick.bind(process, this.uncork.bind(this))
+
     const input = new PassThrough({...inputOptions, objectMode: true})
     .on('data', (data) =>
     {
@@ -42,7 +44,7 @@ module.exports = class Dispatcher extends Writable
     {
       for(const writer of _writers) writer.end()
     })
-    .on('drain', process.nextTick.bind(process, this.uncork.bind(this)))
+    .on('drain', uncork)
     .pause()
 
     function onFinish()
@@ -50,7 +52,9 @@ module.exports = class Dispatcher extends Writable
       if(!inFlight.size) input.end()
     }
 
-    this.on('finish', onFinish)
+    this
+    .on('finish', onFinish)
+    .cork()
 
     this._input   = input
     this._writers = _writers
@@ -63,7 +67,10 @@ module.exports = class Dispatcher extends Writable
       _writers.push(this)
 
       input.resume()
+      uncork()
     }
+
+    const {_writableState} = this
 
     /**
      * @this writer
@@ -72,7 +79,7 @@ module.exports = class Dispatcher extends Writable
     {
       inFlight.delete(this)
 
-      if(this._writableState.finished) onFinish()
+      if(_writableState.finished) onFinish()
     }
 
     for(const writer of writers) this.pipe(writer)
@@ -92,13 +99,11 @@ module.exports = class Dispatcher extends Writable
 
     const index = _writers.findIndex(findItem, writer)
     if(index != null)
-    {
       _writers.splice(index, 1)
-
-      this._writerRemoved()
-    }
     else
       writer.removeListener('drain', this._add)
+
+    this._writerRemoved()
 
     // TODO emit `unpipe` event?
     writer.removeListener('allLanded', this._allLanded)
@@ -125,6 +130,10 @@ module.exports = class Dispatcher extends Writable
   {
     const {_input, _writers} = this
 
-    if(!_writers.length) _input.pause()
+    if(!_writers.length)
+    {
+      _input.pause()
+      this.cork()
+    }
   }
 }
