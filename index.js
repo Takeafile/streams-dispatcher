@@ -89,8 +89,9 @@ module.exports = class Dispatcher extends Writable
   {
     this._add.call(writer)
 
-    // TODO emit `pipe` event?
-    return writer.on('allLanded', this._allLanded)
+    return writer
+    .on('allLanded', this._allLanded)
+    .emit('pipe', this)
   }
 
   unpipe(writer)
@@ -105,8 +106,9 @@ module.exports = class Dispatcher extends Writable
 
     this._writerRemoved()
 
-    // TODO emit `unpipe` event?
-    writer.removeListener('allLanded', this._allLanded)
+    writer
+    .removeListener('allLanded', this._allLanded)
+    .emit('unpipe', this)
 
     return this
   }
