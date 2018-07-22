@@ -89,9 +89,11 @@ module.exports = class Dispatcher extends Writable
   {
     this._add.call(writer)
 
-    return writer
+    writer
     .on('allLanded', this._allLanded)
     .emit('pipe', this)
+
+    return writer
   }
 
   unpipe(writer)
