@@ -1,3 +1,24 @@
 # streams-dispatcher
 
-Distribute a stream chunks in several stream channels, and later re-join them in order
+Distribute data chunks from a stream to other streams
+
+With Node.js `Readable` streams, you can be able to pipe them to several
+destination streams, receiving all of them a copy of the same data. This module
+allows instead to send each data chunk to a diferent destination stream each
+time in a Round-Robin way.
+
+## Install
+
+```sh
+npm install streams-dispatcher
+```
+
+## API
+
+- *options*: options passed to the underlaying `Writable` stream
+  - *inputOptions*: options passed to the internal `input` stream
+  - *writers*: list of `Writable` streams where to distribute the data chunks
+
+## TODO
+
+Move management of in-flight data chunks to its own independent module

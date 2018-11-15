@@ -1,7 +1,7 @@
 {
   "name": "streams-dispatcher",
   "version": "0.0.0",
-  "description": "Distribute a stream chunks in several stream channels, and later re-join them in order",
+  "description": "Distribute data chunks from a stream to other streams",
   "main": "index.js",
   "scripts": {
     "test": "jest --notify --coverage"
