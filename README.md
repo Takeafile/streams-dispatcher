@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/Takeafile/streams-dispatcher.svg?branch=master)](https://travis-ci.org/Takeafile/streams-dispatcher)
+[![Coverage Status](https://coveralls.io/repos/github/Takeafile/streams-dispatcher/badge.svg?branch=master)](https://coveralls.io/github/Takeafile/streams-dispatcher?branch=master)
+
 # streams-dispatcher
 
 Distribute data chunks from a stream to other streams

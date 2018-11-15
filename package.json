@@ -4,6 +4,7 @@
   "description": "Distribute data chunks from a stream to other streams",
   "main": "index.js",
   "scripts": {
+    "coverage": "npm test -- --coverageReporters=text-lcov | coveralls",
     "test": "jest --notify --coverage"
   },
   "repository": {
@@ -14,6 +15,7 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/piranna/streams-dispatcher#readme",
   "devDependencies": {
+    "coveralls": "^3.0.2",
     "jest": "^23.6.0"
   }
 }
