@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/Takeafile/streams-dispatcher.svg?branch=master)](https://travis-ci.org/Takeafile/streams-dispatcher)
-[![Coverage Status](https://coveralls.io/repos/github/Takeafile/streams-dispatcher/badge.svg?branch=master)](https://coveralls.io/github/Takeafile/streams-dispatcher?branch=master) [![Greenkeeper badge](https://badges.greenkeeper.io/Takeafile/streams-dispatcher.svg)](https://greenkeeper.io/)
+[![Coverage Status](https://coveralls.io/repos/github/Takeafile/streams-dispatcher/badge.svg?branch=master)](https://coveralls.io/github/Takeafile/streams-dispatcher?branch=master)
+[![Greenkeeper badge](https://badges.greenkeeper.io/Takeafile/streams-dispatcher.svg)](https://greenkeeper.io/)
 
 # streams-dispatcher
 
